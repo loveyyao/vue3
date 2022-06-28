@@ -15,5 +15,14 @@ module.exports = defineConfig({
         resolvers: [ElementPlusResolver()]
       })
     ]
-  }
+  },
+  devServer: {
+    host: 'localhost',
+    port: 3000,
+    open: true,
+    hot: true
+  },
+  // disable source map in production
+  productionSourceMap: false,
+  lintOnSave: false
 })
