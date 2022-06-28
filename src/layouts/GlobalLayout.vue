@@ -1,29 +1,35 @@
 <template>
   <div>
-    <global-header
-      ref="header"
-      title="my header"
-      @change="emitEvent"
-    />
+    <global-header />
+    <div class="y-global-container">
+      <global-aside-menu />
+      <div class="y-global-view-main">
+        <view-tags />
+        <div class="y-view-main">
+          <router-view />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import GlobalHeader from '@/components/globalHeader/GlobalHeader.vue'
-// 子组件自定义事件提交触发
-const emitEvent = (msg) => {
-  console.log(msg)
-}
-// 声明组件ref
-const header = ref<InstanceType<typeof GlobalHeader>>()
-onMounted(() => {
-  console.log(header.value) // 子组件ref对象
-  // 使用ref对象手动向外暴露的方法  相当于vue2 this.$refs.xxx.fun()
-  header.value.fun('父组件调用子组件方法')
-})
+import GlobalHeader from '@/components/globalHeader'
+import GlobalAsideMenu from '@/components/globalAsideMenu'
+import ViewTags from '@/components/viewTags'
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .y-global-container{
+    width: 100%;
+    height: calc(100vh - 70px);
+    display: flex;
+    .y-global-view-main{
+      flex: 1;
+      background-color: #f0f0f0;
+    }
+    .y-view-main{
+      height: calc(100% - 30px);
+    }
+  }
 </style>
