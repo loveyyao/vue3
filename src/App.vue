@@ -1,8 +1,24 @@
 <template>
   <div id="app">
-    <router-view />
+    <el-config-provider :locale="locale">
+      <router-view />
+    </el-config-provider>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import zhLocale from 'element-plus/lib/locale/lang/zh-cn'
+import enLocale from 'element-plus/lib/locale/lang/en'
+
+const locale = ref(null)
+const store = useStore()
+const lang = computed(() => store.state.app.language)
+watch(lang, (val) => {
+  locale.value = val === 'zh' ? zhLocale : enLocale
+})
+</script>
 
 <style lang="scss">
 #app {

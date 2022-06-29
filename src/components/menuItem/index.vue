@@ -5,7 +5,7 @@
         <el-icon v-if="item.meta.icon">
           <component :is="item.meta.icon" />
         </el-icon>
-        <span>{{ item.meta.title }}</span>
+        <span>{{ $t('menuLang.' + item.meta.title) }}</span>
       </template>
       <menu-item :menus="item.children" />
     </el-sub-menu>
@@ -13,7 +13,7 @@
       <el-icon v-if="item.meta.icon">
         <component :is="item.meta.icon" />
       </el-icon>
-      <template #title>{{ item.meta.title }}</template>
+      <template #title>{{ $t('menuLang.' + item.meta.title) }}</template>
     </el-menu-item>
   </template>
 </template>

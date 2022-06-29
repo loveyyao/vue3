@@ -10,7 +10,7 @@
       @close="closeViewTag(item, index)"
       @click="toViewTag(item)"
     >
-      {{ item.meta.title }}
+      {{ $t('menuLang.' + item.meta.title) }}
     </el-tag>
   </div>
 </template>

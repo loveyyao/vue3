@@ -16,7 +16,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/home',
         component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue'),
         meta: {
-          title: '首页',
+          title: 'home',
           keepAlive: true,
           showViewTag: true,
           icon: 'House'
@@ -26,7 +26,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/about',
         component: () => import(/* webpackChunkName: "about" */ '@/views/about/index.vue'),
         meta: {
-          title: '关于',
+          title: 'about',
           keepAlive: true,
           showViewTag: true,
           icon: 'House'
@@ -36,7 +36,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/table',
         component: GlobalRouterView,
         meta: {
-          title: '表格',
+          title: 'table',
           keepAlive: true,
           icon: 'House'
         },
@@ -45,7 +45,7 @@ export const routes: Array<RouteRecordRaw> = [
             path: '/table/base',
             component: () => import(/* webpackChunkName: "table" */ '@/views/table/baseTable.vue'),
             meta: {
-              title: '基础表格',
+              title: 'baseTable',
               keepAlive: true,
               showViewTag: true,
               icon: 'House'
