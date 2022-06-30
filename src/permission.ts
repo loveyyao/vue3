@@ -2,7 +2,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import router from './router'
 import store from './store'
-import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
+import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { AUTHORIZATION } from '@/utils/storage-vars'
 import { permission } from '@/utils/utils'
 

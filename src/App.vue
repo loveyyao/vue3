@@ -7,16 +7,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import zhLocale from 'element-plus/lib/locale/lang/zh-cn'
 import enLocale from 'element-plus/lib/locale/lang/en'
+import { LANGUAGE } from '@/utils/storage-vars'
 
 const locale = ref(null)
 const store = useStore()
 const lang = computed(() => store.state.app.language)
 watch(lang, (val) => {
   locale.value = val === 'zh' ? zhLocale : enLocale
+})
+onMounted(() => {
+  locale.value = (localStorage.getItem(LANGUAGE) || 'zh') === 'zh' ? zhLocale : enLocale
 })
 </script>
 
