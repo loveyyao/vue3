@@ -1,1 +1,2 @@
 export const LANGUAGE = 'LANGUAGE'
+export const AUTHORIZATION = 'AUTHORIZATION'

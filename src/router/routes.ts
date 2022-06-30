@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import GlobalLayout from '@/layouts/GlobalLayout.vue'
 import GlobalRouterView from '@/layouts/GlobalRouterView.vue'
+import UserLayout from '@/layouts/UserLayout.vue'
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -14,6 +15,7 @@ export const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/home',
+        name: 'home',
         component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue'),
         meta: {
           title: 'home',
@@ -24,6 +26,7 @@ export const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/about',
+        name: 'about',
         component: () => import(/* webpackChunkName: "about" */ '@/views/about/index.vue'),
         meta: {
           title: 'about',
@@ -34,6 +37,7 @@ export const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/table',
+        name: 'table',
         component: GlobalRouterView,
         meta: {
           title: 'table',
@@ -43,6 +47,7 @@ export const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: '/table/base',
+            name: 'baseTable',
             component: () => import(/* webpackChunkName: "table" */ '@/views/table/baseTable.vue'),
             meta: {
               title: 'baseTable',
@@ -52,6 +57,24 @@ export const routes: Array<RouteRecordRaw> = [
             }
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/user',
+    name: 'user',
+    redirect: '/user/login',
+    component: UserLayout,
+    children: [
+      {
+        path: '/user/login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "user" */ '@/views/login/index.vue'),
+        meta: {
+          title: 'login',
+          keepAlive: false,
+          showViewTag: false
+        }
       }
     ]
   }
