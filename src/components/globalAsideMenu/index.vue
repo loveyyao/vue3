@@ -50,6 +50,12 @@ watch(() => router.currentRoute.value, (newValue: RouteRecordRaw)=> {
 </script>
 
 <style lang="scss" scoped>
+  .y-aside-menu{
+    position: absolute;
+    top: 70px;
+    left: 0;
+    height: 100%;
+  }
   ::v-deep{
     .el-menu{
       height: 100%;

@@ -5,6 +5,7 @@ import store from './store'
 import i18n from './locals'
 import './permission'
 import './assets/style/reset.css'
+import './assets/style/global.scss'
 import installPlugins from './plugins'
 
 const app = createApp(App)
