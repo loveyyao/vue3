@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { AUTHORIZATION } from '@/utils/storage-vars'
+import { permission } from '@/utils/utils'
 
 NProgress.configure({ showSpinner: false })
 const whiteList = ['/user/login']
@@ -14,13 +15,27 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
   if (token) {
     const state: any = store.state
     const user = state.user.userInfo
+    const roles: any = to.meta.roles
+    if (to.matched.length === 0) {
+      next('/error/404')
+    }
     if (user.id) {
       NProgress.done()
-      next()
+      // 路由设置权限并且当前登录账号没有这个权限就到404
+      if (roles && roles.length && !permission(roles)) {
+        next('/error/404')
+      } else {
+        next()
+      }
     } else {
       store.dispatch('user/getUserInfo').then(() => {
         NProgress.done()
-        next()
+        // 路由设置权限并且当前登录账号没有这个权限就到404
+        if (roles && roles.length && !permission(roles)) {
+          next('/error/404')
+        } else {
+          next()
+        }
       }).catch(() => {
         localStorage.removeItem(AUTHORIZATION)
         NProgress.done()
@@ -32,7 +47,7 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
       NProgress.done()
       next()
     } else {
-      next(`/user/login?redirect=${to.path}`)
+      next(`/user/login`)
     }
   }
 })

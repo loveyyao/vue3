@@ -1,5 +1,9 @@
 <template>
-  <div v-loading="loading" class="y-login">
+  <div
+    v-loading="loading"
+    class="y-login"
+    element-loading-background="rgba(255,255,255,.4)"
+  >
     <div class="y-login-welcome">欢迎使用后台管理系统</div>
     <div class="y-login-form">
       <el-input v-model="form.username" placeholder="username">
@@ -29,9 +33,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getWelcome } from '@/utils/utils'
 type Form = {
   username: string
   password: string
@@ -43,11 +48,27 @@ const form = reactive<Form>({
   password: 'password'
 })
 const loading = ref<boolean>(false)
+const { appContext } = getCurrentInstance()
+const globalProxy = appContext.config.globalProperties
 const submitLogin = () => {
+  if (!form.username) {
+    globalProxy.$message.error('账号不能为空')
+    return
+  }
+  if (!form.password) {
+    globalProxy.$message.error('密码不能为空')
+    return
+  }
   loading.value = true
   store.dispatch('user/login', { ...form }).then(() => {
     loading.value = false
     router.replace('/')
+    globalProxy.$notify({
+      title: '欢迎',
+      message: getWelcome(),
+      type: 'success',
+      offset: 75
+    })
   }).catch(() => {
     loading.value = false
   })

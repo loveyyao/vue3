@@ -10,6 +10,7 @@ import 'element-plus/es/components/loading/style/css'
 import 'element-plus/es/components/notification/style/css'
 import type { App } from 'vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { permission } from '@/utils/utils'
 
 const plugins = [
   ElMessage,
@@ -26,5 +27,14 @@ export default function (app: App) {
   // 注册element-plus全局方法
   plugins.forEach(plugin => {
     app.use(plugin)
+  })
+  // 注册全局指令
+  app.directive('permission', {
+    mounted(el, binding) {
+      const roles = binding.value
+      if (!permission(roles)) {
+        el.parentNode && el.parentNode.removeChild(el)
+      }
+    }
   })
 }

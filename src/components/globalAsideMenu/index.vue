@@ -34,7 +34,15 @@ type Props = {
 const store = useStore()
 const router = useRouter()
 const activePath = ref<string>()
-const menus = computed<Array<RouteRecordRaw>>(() => store.state.app.menus)
+const menus = computed<Array<RouteRecordRaw>>(() => {
+  // 获取侧边栏路由自动生成菜单
+  return store.state.user.menus.reduce((list: Array<RouteRecordRaw>, menu: RouteRecordRaw) => {
+    if (menu.path === '/') {
+      list = menu.children || []
+    }
+    return list
+  }, [])
+})
 const props = withDefaults(defineProps<Props>(), {
   backgroundColor: '#545c64',
   activeTextColor: '#ffd04b',

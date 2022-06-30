@@ -21,7 +21,8 @@ export const routes: Array<RouteRecordRaw> = [
           title: 'home',
           keepAlive: true,
           showViewTag: true,
-          icon: 'House'
+          icon: 'House',
+          roles: ['admin', 'home']
         }
       },
       {
@@ -32,7 +33,8 @@ export const routes: Array<RouteRecordRaw> = [
           title: 'about',
           keepAlive: true,
           showViewTag: true,
-          icon: 'House'
+          icon: 'House',
+          roles: ['about']
         }
       },
       {
@@ -42,7 +44,8 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'table',
           keepAlive: true,
-          icon: 'House'
+          icon: 'House',
+          roles: ['admin']
         },
         children: [
           {
@@ -53,11 +56,29 @@ export const routes: Array<RouteRecordRaw> = [
               title: 'baseTable',
               keepAlive: true,
               showViewTag: true,
-              icon: 'House'
+              icon: 'House',
+              roles: ['admin']
             }
           }
         ]
       }
+    ]
+  },
+  {
+    path: '/error',
+    redirect: '/error/404',
+    component: GlobalLayout,
+    children: [
+      {
+        path: '/error/404',
+        name: 'error404',
+        component: () => import(/* webpackChunkName: "error-page" */ '@/views/error-page/index.vue'),
+        meta: {
+          title: '404',
+          keepAlive: false,
+          showViewTag: false
+        }
+      },
     ]
   },
   {

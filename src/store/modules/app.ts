@@ -1,4 +1,3 @@
-import { routes } from '@/router/routes'
 import type { RouteRecordRaw } from 'vue-router'
 import { LANGUAGE } from '@/utils/storage-vars'
 
@@ -6,13 +5,6 @@ export default {
   namespaced: true,
   state: {
     collapsed: false, // 是否收起菜单
-    // 菜单
-    menus: routes.reduce((list: Array<RouteRecordRaw>, menu: RouteRecordRaw) => {
-      if (menu.path === '/') {
-        list = menu.children || []
-      }
-      return list
-    }, []),
     viewTags: [],
     language: localStorage.getItem(LANGUAGE) || 'zh'
   },
