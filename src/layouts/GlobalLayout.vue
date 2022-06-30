@@ -9,7 +9,11 @@
       >
         <view-tags />
         <div class="y-view-main-container">
-          <router-view />
+          <router-view v-slot="{ Component }">
+            <transition name="slide-fade" mode="out-in" :duration="{ enter: 500, leave: 300 }">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </div>
       </div>
     </div>
@@ -17,9 +21,10 @@
 </template>
 
 <script lang="ts" setup>
-import GlobalHeader from '@/components/globalHeader'
-import GlobalAsideMenu from '@/components/globalAsideMenu'
-import ViewTags from '@/components/viewTags'
+// 配置组件自动引入，components下的组件也将会自动引入
+// import GlobalHeader from '@/components/globalHeader'
+// import GlobalAsideMenu from '@/components/globalAsideMenu'
+// import ViewTags from '@/components/viewTags'
 </script>
 
 <style lang="scss" scoped>
@@ -45,5 +50,20 @@ import ViewTags from '@/components/viewTags'
       padding: 16px;
       overflow: auto;
     }
+  }
+  .slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+  }
+
+  .slide-fade-leave-active {
+    transition: all 0.5s;
+  }
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    opacity: 0.3;
+  }
+
+  .slide-fade-enter-to, .slide-fade-leave-from {
+    opacity: 1;
   }
 </style>

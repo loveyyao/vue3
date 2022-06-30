@@ -24,7 +24,7 @@ import {
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import MenuItem from '@/components/menuItem'
+// import MenuItem from '@/components/menuItem'
 
 type Props = {
   backgroundColor?: string

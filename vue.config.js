@@ -8,6 +8,7 @@ module.exports = defineConfig({
   configureWebpack: {
     // webpack plugins
     plugins: [
+      // 配置组件自动引入，components下的组件也将会自动引入
       AutoImport({
         resolvers: [ElementPlusResolver()]
       }),
@@ -15,6 +16,10 @@ module.exports = defineConfig({
         resolvers: [ElementPlusResolver()]
       })
     ]
+  },
+  chainWebpack: config => {
+    // 解决 vue-i18n 警告
+    config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js')
   },
   devServer: {
     host: 'localhost',

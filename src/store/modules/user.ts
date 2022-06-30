@@ -15,6 +15,11 @@ export default {
     },
     setUserInfo(state: any, val: any) {
       state.userInfo = val
+    },
+    clearLoginInfo(state: any) {
+      state.token = ''
+      state.userInfo = {}
+      localStorage.removeItem(AUTHORIZATION)
     }
   },
   actions: {
@@ -36,6 +41,14 @@ export default {
         }).catch(err => {
           reject(err)
         })
+      })
+    },
+    logout(action: any) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          action.commit('clearLoginInfo')
+          resolve(null)
+        }, 500)
       })
     }
   }

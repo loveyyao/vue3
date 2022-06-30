@@ -21,11 +21,11 @@
         <el-icon :size="25"><Bell /></el-icon>
       </el-badge>
       <el-avatar style="margin: 0 16px" :size="35">
-        <img src="@/assets/avatar.jpg"/>
+        <img :src="userInfo.avatar || '@/assets/avatar.jpg'"/>
       </el-avatar>
       <el-dropdown trigger="click" @command="command">
         <span class="user-name">
-          五更琉璃
+          {{ userInfo.realname }}
           <el-icon class="el-icon--right">
             <arrow-down />
           </el-icon>
@@ -54,14 +54,17 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
-import { getCurrentInstance, ref, onMounted } from 'vue'
+import { getCurrentInstance, ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const isZh = ref<boolean>(true)
 const store = useStore()
+const router = useRouter()
 const { locale, t } = useI18n()
 const { appContext } = getCurrentInstance()
 const globalProxy = appContext.config.globalProperties
+const userInfo = computed(() => store.state.user.userInfo)
 onMounted(() => {
   const lang = store.state.app.language
   isZh.value = lang === 'zh'
@@ -84,6 +87,17 @@ const logout = () => {
     closeOnClickModal: false
   }).then(() => {
     console.log('ok')
+    const loadingInstance = globalProxy.$loading({
+      lock: true,
+      text: '退出中...',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+    store.dispatch('user/logout').then(() => {
+      loadingInstance.close()
+      router.push('/user/login')
+    }).catch(() => {
+      loadingInstance.close()
+    })
   }).catch(() => {
     console.log('cancel')
   })
