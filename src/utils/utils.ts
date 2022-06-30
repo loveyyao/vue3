@@ -12,10 +12,10 @@ export const getWelcome = () => {
   if ([12, 13].includes(hour)) {
     return `中午好，欢迎回来！`
   }
-  if ([14, 18].includes(hour)) {
+  if ([14, 15, 16, 17, 18].includes(hour)) {
     return `下午好，欢迎回来！`
   }
-  if ([19, 23].includes(hour)) {
+  if ([19, 20, 21, 22, 23].includes(hour)) {
     return `晚上好，欢迎回来！`
   }
   return `凌晨好，欢迎回来！`

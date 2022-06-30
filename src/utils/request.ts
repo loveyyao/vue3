@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { AUTHORIZATION}  from '@/utils/storage-vars'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import router from '@/router'
+import store from '@/store'
 
 const request: AxiosInstance = axios.create({
   baseURL: '/api',
@@ -19,11 +21,18 @@ const errorHandler = (error: any) => {
         showCancelButton: false,
         showClose: false,
         confirmButtonText: '确认',
-        closeOnClickModal: false
+        closeOnClickModal: false,
+        closeOnPressEscape: false
       }).then(() => {
         // TODO 退出重新登录
+        localStorage.removeItem(AUTHORIZATION)
+        store.commit('user/clearLoginInfo')
+        router.replace('/user/login')
         console.log('ok')
       }).catch(() => {
+        localStorage.removeItem(AUTHORIZATION)
+        store.commit('user/clearLoginInfo')
+        router.replace('/user/login')
         console.log('cancel')
       })
     } else {
@@ -49,6 +58,30 @@ request.interceptors.response.use(response => {
   const res = response.data
   // 返回类型为文件流的处理
   // if (response.config.responseType === 'blob') {}
+  if (res.code === 401) {
+    // 登录过期
+    ElMessageBox({
+      title: '提示',
+      message: '登录过期，请重新登录',
+      showCancelButton: false,
+      showClose: false,
+      confirmButtonText: '确认',
+      closeOnClickModal: false,
+      closeOnPressEscape: false
+    }).then(() => {
+      // TODO 退出重新登录
+      localStorage.removeItem(AUTHORIZATION)
+      store.commit('user/clearLoginInfo')
+      router.replace('/user/login')
+      console.log('ok')
+    }).catch(() => {
+      localStorage.removeItem(AUTHORIZATION)
+      store.commit('user/clearLoginInfo')
+      router.replace('/user/login')
+      console.log('cancel')
+    })
+    return Promise.reject(res)
+  }
   if (res.code !== 200 || !res.success) {
     ElMessage({
       message: res.msg || res.message || '服务器异常',

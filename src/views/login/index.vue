@@ -63,12 +63,14 @@ const submitLogin = () => {
   store.dispatch('user/login', { ...form }).then(() => {
     loading.value = false
     router.replace('/')
-    globalProxy.$notify({
-      title: '欢迎',
-      message: getWelcome(),
-      type: 'success',
-      offset: 75
-    })
+    setTimeout(() => {
+      globalProxy.$notify({
+        title: '欢迎',
+        message: getWelcome(),
+        type: 'success',
+        offset: 75
+      })
+    }, 1000)
   }).catch(() => {
     loading.value = false
   })

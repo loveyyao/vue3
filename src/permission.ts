@@ -37,6 +37,8 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
           next()
         }
       }).catch(() => {
+        // NProgress.done()
+        // next()
         localStorage.removeItem(AUTHORIZATION)
         NProgress.done()
         next('/user/login')
