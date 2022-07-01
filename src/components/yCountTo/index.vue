@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 watch(() => props.value, (newVal: number, oldVal: number) => {
   val.start = oldVal
   val.end = newVal
-})
+}, { immediate: true })
 
 </script>
 

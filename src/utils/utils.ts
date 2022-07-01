@@ -1,24 +1,25 @@
 import store from '@/store'
 
-export const getWelcome = () => {
+export const getWelcome = (login?: boolean) => {
   const date = new Date()
   const hour = date.getHours()
+  let timeStr = '下午好'
   if ([8, 9].includes(hour)) {
-    return `早上好，欢迎回来！`
+    timeStr = `早上好`
   }
   if ([10, 11].includes(hour)) {
-    return `上午好，欢迎回来！`
+    timeStr = `上午好`
   }
   if ([12, 13].includes(hour)) {
-    return `中午好，欢迎回来！`
+    timeStr = `中午好`
   }
   if ([14, 15, 16, 17, 18].includes(hour)) {
-    return `下午好，欢迎回来！`
+    timeStr = `下午好`
   }
   if ([19, 20, 21, 22, 23].includes(hour)) {
-    return `晚上好，欢迎回来！`
+    timeStr = `晚上好`
   }
-  return `凌晨好，欢迎回来！`
+  return login ? `${timeStr}，欢迎回来！` : timeStr
 }
 
 export const permission = (permission: any): boolean => {

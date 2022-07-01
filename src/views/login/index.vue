@@ -66,7 +66,7 @@ const submitLogin = () => {
     setTimeout(() => {
       globalProxy.$notify({
         title: '欢迎',
-        message: getWelcome(),
+        message: getWelcome(true),
         type: 'success',
         offset: 75
       })
