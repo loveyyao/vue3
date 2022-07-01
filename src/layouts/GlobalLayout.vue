@@ -9,13 +9,13 @@
       >
         <view-tags />
         <div class="y-view-main-container">
-          <keep-alive>
-            <router-view v-slot="{ Component }">
-              <transition name="slide-fade" mode="out-in" :duration="{ enter: 500, leave: 300 }">
+          <router-view v-slot="{ Component }">
+            <transition name="slide-fade" mode="out-in" :duration="{ enter: 500, leave: 300 }">
+              <keep-alive>
                 <component :is="Component" />
-              </transition>
-            </router-view>
-          </keep-alive>
+              </keep-alive>
+            </transition>
+          </router-view>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
     }
   }
   .slide-fade-enter-active {
-    transition: all 0.3s ease-out;
+    transition: all 0.3s;
   }
 
   .slide-fade-leave-active {
