@@ -291,8 +291,8 @@ const loadData = () => {
 
   const xAxisData = []
   const seriesData = []
-  for (let i = 0; i < 10; i++) {
-    const date = dayjs().subtract(10 - i, 'day').format('YYYY-MM-DD')
+  for (let i = 0; i < 30; i++) {
+    const date = dayjs().subtract(30 - i, 'day').format('YYYY-MM-DD')
     xAxisData.push(date)
     seriesData.push(getRandomNumber())
   }

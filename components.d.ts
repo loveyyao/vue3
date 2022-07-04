@@ -42,6 +42,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     ViewTags: typeof import('./src/components/viewTags/index.vue')['default']
     YCountTo: typeof import('./src/components/yCountTo/index.vue')['default']
+    YProgress: typeof import('./src/components/yProgress/index.vue')['default']
   }
 }
 

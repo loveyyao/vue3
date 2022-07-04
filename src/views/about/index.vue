@@ -2,6 +2,7 @@
   <div class="y-view-main">
     <el-button v-permission="['admin']">测试权限admin</el-button>
     <el-button v-permission="['about']" type="primary">测试权限about</el-button>
+    <el-button type="primary" @click="changeProgress">changeProgress</el-button>
     <y-count-to
       :value="val"
       prefix="￥"
@@ -9,6 +10,14 @@
       :count-style="{ color: 'red' }"
     />
     <v-chart class="chart" :option="option" />
+    <div>
+      进度条
+      <y-progress
+        :progress="progress"
+        :colors="colors"
+        :max-progress="70"
+      />
+    </div>
   </div>
 </template>
 
@@ -53,7 +62,12 @@ const option = ref({
     }
   ]
 })
+const progress = ref([11, 24, 30])
+const colors = ref(['rgba(25, 212, 174, 1)', 'rgba(90, 177, 239, 1)', 'rgba(250, 110, 134, 1)'])
 
+const changeProgress = () => {
+  progress.value = [5, 30, 35]
+}
 onMounted(() => {
   setTimeout(() => {
     val.value = 2000
@@ -63,6 +77,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
   .chart{
-    height: 500px;
+    height: 200px;
   }
 </style>
