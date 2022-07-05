@@ -11,11 +11,18 @@
     />
     <v-chart class="chart" :option="option" />
     <div>
-      进度条
+      横向柱状图
       <y-progress
         :progress="progress"
         :colors="colors"
-        :max-progress="70"
+      />
+    </div>
+    <div>
+      进度条
+      <y-progress
+        :progress="progress[0]"
+        :colors="colors[0]"
+        :max-progress="100"
       />
     </div>
   </div>
