@@ -1,5 +1,5 @@
 <template>
-  <div class="y-progress-wrap">
+  <div class="y-progress-wrap" :style="{width: width}">
     <div
       ref="progressRef"
       class="y-progress-main"
@@ -10,7 +10,8 @@
         class="y-progress-item"
         :style="{
           width: item.width + 'px',
-          'background-color': item.color,
+          'background-color': progressList.length === 1 ? 'none' : item.color,
+          'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
           'transition-delay': 0.1 * index + 's'
         }"
       />
@@ -32,12 +33,14 @@ type Props = {
   progress: any[] | number,
   colors: any[] | string,
   maxProgress?: number
+  width?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   progress: () => ([]),
   colors: () => ([]),
-  maxProgress: 100
+  maxProgress: 100,
+  width: '100%'
 })
 const progressList = ref([])
 const progressRef = ref<HTMLElement>(null)
@@ -112,6 +115,9 @@ const initProgress = (newVal) => {
     }
     .y-progress-suffix{
       margin-left: 8px;
+      color: rgba(29, 33, 41, 1);
+      font-size: 12px;
+      font-weight: 400;
     }
     //@for $i from 1 through 12 {
     //  .y-progress-item:nth-child(#{$i}){
