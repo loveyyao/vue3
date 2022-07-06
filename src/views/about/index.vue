@@ -3,13 +3,16 @@
     <el-button v-permission="['admin']">测试权限admin</el-button>
     <el-button v-permission="['about']" type="primary">测试权限about</el-button>
     <el-button type="primary" @click="changeProgress">changeProgress</el-button>
-    <y-count-to
-      :value="val"
-      prefix="￥"
-      suffix="RMB"
-      :count-style="{ color: 'red' }"
-    />
     <v-chart class="chart" :option="option" />
+    <div class="count">
+      <div>数字</div>
+      <y-count-to
+        :value="val"
+        prefix="￥"
+        suffix=" RMB"
+        :count-style="{ color: 'red' }"
+      />
+    </div>
     <div>
       横向柱状图
       <y-progress
@@ -69,17 +72,27 @@ const option = ref({
     }
   ]
 })
-const progress = ref([11, 24, 30])
-const colors = ref(['rgba(25, 212, 174, 1)', 'rgba(90, 177, 239, 1)', 'rgba(250, 110, 134, 1)'])
+const progress = ref([11, 24, 30, 10])
+const colors = ref([
+  '#19D4AE',
+  '#1593C5',
+  '#FA6E86',
+  '#FFB980',
+  '#69840A',
+  '#378256',
+  '#B79757',
+  '#8C73DD',
+  '#EFAAB5',
+  '#F272BE'
+])
 
-const changeProgress = () => {
-  progress.value = [5, 30, 35]
+const getRandomNumber = (maxNum: boolean) => {
+  return parseFloat((Math.random() * maxNum).toFixed(2))
 }
-onMounted(() => {
-  setTimeout(() => {
-    val.value = 2000
-  }, 1500)
-})
+const changeProgress = () => {
+  val.value = getRandomNumber(10000)
+  progress.value = [getRandomNumber(25), getRandomNumber(25), getRandomNumber(25), getRandomNumber(25)]
+}
 </script>
 
 <style lang="scss" scoped>
