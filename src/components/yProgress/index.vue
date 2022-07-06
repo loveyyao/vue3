@@ -2,19 +2,25 @@
   <div class="y-progress-wrap" :style="{width: width}">
     <div
       ref="progressRef"
-      class="y-progress-main"
+      class="y-progress-main-wrap"
     >
-      <div
-        v-for="(item, index) in progressList"
-        :key="index"
-        class="y-progress-item"
-        :style="{
-          width: item.width + 'px',
-          'background-color': progressList.length === 1 ? 'none' : item.color,
-          'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
-          'transition-delay': 0.1 * index + 's'
-        }"
-      />
+      <transition-group
+        class="y-progress-main"
+        tag="div"
+        name="progress-transition"
+      >
+        <div
+          v-for="(item, index) in progressList"
+          :key="index"
+          class="y-progress-item"
+          :style="{
+            width: item.width + 'px',
+            'background-color': progressList.length === 1 ? 'none' : item.color,
+            'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
+            'transition-delay': 0.1 * index + 's'
+          }"
+        />
+      </transition-group>
     </div>
     <div class="y-progress-suffix">{{ progressValue }}/{{ maxProgress }}</div>
   </div>
@@ -26,8 +32,7 @@ import {
   defineProps,
   watch,
   ref,
-  nextTick,
-  computed
+  nextTick
 } from 'vue'
 type Props = {
   progress: any[] | number,
@@ -42,23 +47,21 @@ const props = withDefaults(defineProps<Props>(), {
   maxProgress: 100,
   width: '100%'
 })
-const progressList = ref([])
+const progressList = ref<any>([])
+const progressValue = ref(0)
 const progressRef = ref<HTMLElement>(null)
 
-const progressValue = computed(() => {
-  return progressList.value.reduce((val, next) => {
-    val = parseFloat((val + next.progress).toFixed(2))
-    return val
-  }, 0)
-})
-
 watch(() => props.progress, (newVal) => {
-  const arr = []
+  const arr: any[] = []
   if (typeof newVal === 'number') {
     arr.push(newVal)
   } else {
     arr.push(...newVal)
   }
+  progressValue.value = arr.reduce((val, next) => {
+    val = parseFloat((val + next).toFixed(2))
+    return val
+  }, 0)
   nextTick(() => {
     initProgress(arr)
   })
@@ -67,7 +70,7 @@ watch(() => props.progress, (newVal) => {
   immediate: true
 })
 
-const initProgress = (newVal) => {
+const initProgress = (newVal: any[]) => {
   const num = (newVal || []).length
   const w = progressRef.value.getBoundingClientRect().width
   progressList.value = []
@@ -79,16 +82,11 @@ const initProgress = (newVal) => {
   }
   for (let i = 0; i < num; i++) {
     progressList.value.push({
-      width: 0,
+      width: newVal[i] / props.maxProgress * w,
       progress: newVal[i],
       color: colorList[i]
     })
   }
-  setTimeout(() => {
-    for (let i = 0; i < num; i++) {
-      progressList.value[i].width = newVal[i] / props.maxProgress * w
-    }
-  }, 0)
 }
 </script>
 
@@ -97,8 +95,11 @@ const initProgress = (newVal) => {
     width: 300px;
     display: flex;
     align-items: center;
-    .y-progress-main{
+    .y-progress-main-wrap{
       flex: 1;
+    }
+    .y-progress-main{
+      width: 100%;
       height: 8px;
       border-radius: 4px;
       background-color: rgba(64, 140, 255, .2);
@@ -107,7 +108,7 @@ const initProgress = (newVal) => {
       .y-progress-item{
         width: 0;
         height: 100%;
-        transition: all .3s;
+        transition: all 0.3s;
         &:last-child{
           border-radius: 0 4px 4px 0;
         }
@@ -124,5 +125,17 @@ const initProgress = (newVal) => {
     //    transition-delay: 0.1s * ($i - 1);
     //  }
     //}
+  }
+  .progress-transition-enter-active {
+    opacity: 0;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  .progress-transition-enter-to {
+    opacity: 1;
+    transform-origin: left;
+    transform: scaleX(1);
+    //transition: all 0.3s; //transition要写在此处
   }
 </style>
