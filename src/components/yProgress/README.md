@@ -81,10 +81,12 @@ const maxProgress = ref(100)
 | type          | 进度条类型。 circle 为环形                                        | string           | default |
 | progress      | 显示进度。 type 为 circle时 progress为数组只显示数组第一项                                                 | [array, number]   | []      |
 | showSuffix     | type 为 default时 是否显示后缀                                                | boolean   | true      |
-| colors        | 进度条显示颜色，progress为数组时显示按照顺序显示，没有就显示none. type 为 circle时 colors为数组时只显示数组第一项,内置了几个颜色     | [array, string]   | []     |
+| colors        | 进度条显示颜色，progress为数组时显示按照顺序显示，没有就显示内置颜色。 type 为 circle时 colors为数组时只显示数组第一项     | [array, string]   | []     |
 | maxProgress   | 最大值                                                        | number             | 100
 | width         | 进度条外层宽度。 type 为 default时  才生效                                              | string             | 100%
 | size         | 环形进度宽度。 type 为 circle时  才生效                                              | number             | 200
+
+
 内置插槽
 ----
 
