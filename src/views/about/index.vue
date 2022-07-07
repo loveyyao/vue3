@@ -26,7 +26,33 @@
         :progress="progress[0]"
         :colors="colors[0]"
         :max-progress="100"
+      >
+        <template
+          #suffix="{progressValue, maxProgress}"
+        >
+          {{ progressValue + ' - ' + maxProgress }}
+        </template>
+      </y-progress>
+    </div>
+    环形进度
+    <div style="display: flex">
+      <y-progress
+        type="circle"
+        :progress="progressCircle[0]"
+        :colors="colors[0]"
+        :max-progress="100"
       />
+      <y-progress
+        type="circle"
+        :progress="progressCircle[1]"
+        :max-progress="100"
+      >
+        <template
+          #circleContent="{progressValue, maxProgress}"
+        >
+          {{ progressValue + ' / ' + maxProgress }}
+        </template>
+      </y-progress>
     </div>
   </div>
 </template>
@@ -35,6 +61,7 @@
 import { ref, onMounted } from 'vue'
 
 const val = ref<number>(0)
+const dashoffset = ref<number>(0)
 const option = ref({
   title: {
     text: "Traffic Sources",
@@ -73,6 +100,7 @@ const option = ref({
   ]
 })
 const progress = ref([11, 24, 30, 10])
+const progressCircle = ref([0, 100])
 const colors = ref([
   '#19D4AE',
   '#1593C5',
@@ -86,12 +114,14 @@ const colors = ref([
   '#F272BE'
 ])
 
-const getRandomNumber = (maxNum: boolean) => {
+const getRandomNumber = (maxNum: number) => {
   return parseFloat((Math.random() * maxNum).toFixed(2))
 }
 const changeProgress = () => {
+  dashoffset.value = getRandomNumber(169)
   val.value = getRandomNumber(10000)
   progress.value = [getRandomNumber(25), getRandomNumber(25), getRandomNumber(25), getRandomNumber(25)]
+  progressCircle.value = [getRandomNumber(100), getRandomNumber(100)]
 }
 </script>
 
