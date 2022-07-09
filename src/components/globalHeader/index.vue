@@ -7,6 +7,17 @@
         <Expand v-if="$store.state.app.collapsed" />
         <Fold v-else />
       </el-icon>
+      <el-breadcrumb separator-icon="ArrowRight">
+        <transition-group name="breadcrumb">
+          <el-breadcrumb-item
+            v-for="(item, i) in breadcrumbList"
+            :key="item.path"
+            :to=" i === 0 && breadcrumbList.length > 1 ? { path: item.path } : null"
+          >
+            {{ $t('menuLang.' + item.title) }}
+          </el-breadcrumb-item>
+        </transition-group>
+      </el-breadcrumb>
     </div>
     <div class="y-header-right">
       <el-switch
@@ -54,21 +65,52 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
-import { getCurrentInstance, ref, onMounted, computed } from 'vue'
+import {
+  getCurrentInstance,
+  ref,
+  onMounted,
+  computed,
+  watch
+} from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const isZh = ref<boolean>(true)
+const breadcrumbList = ref([])
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 const { locale, t } = useI18n()
 const { appContext } = getCurrentInstance()
 const globalProxy = appContext.config.globalProperties
 const userInfo = computed(() => store.state.user.userInfo)
+
+const getRouteBreadcrumb = () => {
+  let matched = route.matched.filter(e => e.meta && e.meta.title)
+  if (!isHome(matched[0])) {
+    matched = [{ path: '/home', meta: { title: 'home' } }].concat(matched)
+  }
+  breadcrumbList.value = matched.map((e: any) => {
+    return {
+      path: e.path,
+      title: e.meta.title
+    }
+  })
+}
+const isHome = (route) => {
+  const name = route && route.name
+  if (!name) return false
+  return name === 'home'
+}
+watch(() => route.matched, () => {
+  getRouteBreadcrumb()
+}, { immediate: true })
+
 onMounted(() => {
   const lang = store.state.app.language
   isZh.value = lang === 'zh'
 })
+
 // 下拉菜单点击item事件
 const command = (key: string) => {
   if (key === 'logout') {
@@ -145,9 +187,28 @@ const onlanguagechange = () => {
       cursor: pointer;
     }
   }
+
+  .breadcrumb-enter-active {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .breadcrumb-enter-to {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.3s; //transition要写在此处
+  }
+  
   ::v-deep{
     .el-badge{
       height: 25px;
+      cursor: pointer;
+    }
+    .el-breadcrumb{
+      margin-left: 16px;
+    }
+    .el-breadcrumb__inner.is-link{
+      color: #fff;
       cursor: pointer;
     }
   }
