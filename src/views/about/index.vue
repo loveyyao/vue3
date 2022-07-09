@@ -23,7 +23,7 @@
     <div>
       进度条
       <y-progress
-        :progress="progress[0]"
+        :progress="progressCircle[0]"
         :colors="colors[0]"
         :max-progress="100"
       >
@@ -43,9 +43,10 @@
         :max-progress="100"
       />
       <y-progress
+        :size="300"
         type="circle"
         :progress="progressCircle[1]"
-        :max-progress="100"
+        :max-progress="200"
       >
         <template
           #circleContent="{progressValue, maxProgress}"
@@ -121,7 +122,7 @@ const changeProgress = () => {
   dashoffset.value = getRandomNumber(169)
   val.value = getRandomNumber(10000)
   progress.value = [getRandomNumber(25), getRandomNumber(25), getRandomNumber(25), getRandomNumber(25)]
-  progressCircle.value = [getRandomNumber(100), getRandomNumber(100)]
+  progressCircle.value = [getRandomNumber(100), getRandomNumber(200)]
 }
 </script>
 
