@@ -94,7 +94,7 @@ type Props = {
   type?: string // circle 圆形  default默认
   showSuffix?: boolean
   progress: any[] | number
-  colors: any[] | string
+  colors?: any[] | string
   maxProgress?: number
   width?: string
 }
