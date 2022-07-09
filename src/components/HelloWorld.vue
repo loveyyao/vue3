@@ -34,11 +34,23 @@ type Props = {
 }
 // 定义提交事件类型
 type Emits = {
-  (e: 'change', msg: string): void
+  (e: 'change', msg: string): void,
+  (e: 'focus', msg: string): void
 }
 // defineProps  声明组件props
 // withDefaults  在TS下组件props默认值的定义
 const props = withDefaults(defineProps<Props>(), { title: 'header' })
+// 还可以不用withDefaults来定义props及校验
+// const props = defineProps<Props>({
+//   title: {
+//     type: String,
+//     default: 'default',
+//     required: false,
+//     validator: (val: string) => {
+//       return typeof val === 'string'
+//     }
+//   }
+// })
 // defineEmits 声明自定义事件
 const emits = defineEmits<Emits>()
 const buttonClick = () => {
@@ -48,8 +60,9 @@ const buttonClick = () => {
 const emitEvent = () => {
   // 提交自定义事件
   emits('change', props.title)
+  emits('focus', 'focus msg')
 }
-const fun = (e) => {
+const fun = (e: any) => {
   console.log(e)
 }
 // 在传统的 Vue 组件中，
