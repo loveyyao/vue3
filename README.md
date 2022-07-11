@@ -1,24 +1,27 @@
 # y-app
 
-## Project setup
-```
-yarn install
-```
+## 项目简介
+===
+>基于`vue3`及`element-plus`的后台管理demo。权限控制，路由控制，`vuex`全局数据管理等。
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+### 预览
+![首页](https://github.com/loveyyao/vue3/blob/main/src/assets/img/home.jpg)
+![登录](https://github.com/loveyyao/vue3/blob/main/src/assets/img/login.jpg)
 
-### Compiles and minifies for production
-```
-yarn build
-```
+### 说明
+===
+>登录及用户信息接口使用`setTimeout`写死数据来模拟，使用`admin`账号（密码随意）登录是管理员权限，随便输入的账号登录属于`测试用户`，权限
+> 只有`['home', 'about']`
 
-### Lints and fixes files
+### 下载
 ```
-yarn lint
+git clone https://github.com/loveyyao/vue3.git
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 依赖按照
+```
+npm install
+```
+### 运行
+```
+npm run serve
+```
