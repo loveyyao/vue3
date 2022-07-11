@@ -32,7 +32,7 @@
         <el-icon :size="25"><Bell /></el-icon>
       </el-badge>
       <el-avatar style="margin: 0 16px" :size="35">
-        <img :src="userInfo.avatar || '@/assets/avatar.jpg'"/>
+        <img :src="userInfo.avatar"/>
       </el-avatar>
       <el-dropdown trigger="click" @command="command">
         <span class="user-name">

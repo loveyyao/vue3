@@ -25,17 +25,18 @@ module.exports = defineConfig({
     host: 'localhost',
     port: 3000,
     open: true,
-    hot: true,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          ['^/api']: ''
-        }
-      }
-    }
+    hot: true
+    // 开发代理服务器
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://localhost:3001',
+    //     changeOrigin: true,
+    //     ws: true,
+    //     pathRewrite: {
+    //       ['^/api']: ''
+    //     }
+    //   }
+    // }
   },
   // disable source map in production
   productionSourceMap: false,

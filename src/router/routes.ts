@@ -34,7 +34,7 @@ export const routes: Array<RouteRecordRaw> = [
           keepAlive: true,
           showViewTag: true,
           icon: 'House',
-          roles: ['about']
+          roles: ['admin', 'about']
         }
       },
       {
@@ -45,7 +45,7 @@ export const routes: Array<RouteRecordRaw> = [
           title: 'table',
           keepAlive: true,
           icon: 'House',
-          roles: ['admin']
+          roles: ['admin', 'table']
         },
         children: [
           {
@@ -57,7 +57,7 @@ export const routes: Array<RouteRecordRaw> = [
               keepAlive: true,
               showViewTag: true,
               icon: 'House',
-              roles: ['admin']
+              roles: ['admin', 'table', 'baseTable']
             }
           }
         ]

@@ -1,7 +1,8 @@
 <template>
   <div class="y-view-main">
     <el-button v-permission="['admin']">测试权限admin</el-button>
-    <el-button v-permission="['about']" type="primary">测试权限about</el-button>
+    <el-button v-permission="['admin', 'about']" type="primary">测试权限about</el-button>
+    <el-button v-permission="['admin', 'table']" type="primary">测试权限table</el-button>
     <el-button type="primary" @click="changeProgress">changeProgress</el-button>
     <v-chart class="chart" :option="option" />
     <div class="count">
@@ -59,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const val = ref<number>(0)
 const dashoffset = ref<number>(0)

@@ -41,6 +41,8 @@ const toViewTag = (tag: RouteRecordRaw) => {
     background-color: #fff;
     box-shadow: 0 5px 10px #ddd;
     padding: 2px 10px;
+    position: relative;
+    z-index: 9;
   }
   ::v-deep{
     .el-tag+.el-tag{

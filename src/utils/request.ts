@@ -5,7 +5,7 @@ import router from '@/router'
 import store from '@/store'
 
 const request: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.BASE_URL, // 请求基础路径
   timeout: 1000 * 30 // 30秒超时
 })
 const errorHandler = (error: any) => {
