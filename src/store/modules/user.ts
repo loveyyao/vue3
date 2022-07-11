@@ -87,12 +87,7 @@ export default {
     login(action: any, data: any) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          let token = ''
-          if (data.username === 'admin') {
-            token = ADMIN_TOKEN
-          } else {
-            token = OTHER_TOKEN
-          }
+          const token = data.username === 'admin' ? ADMIN_TOKEN : OTHER_TOKEN
           action.commit('setToken', token)
           resolve(token)
         }, 500)
