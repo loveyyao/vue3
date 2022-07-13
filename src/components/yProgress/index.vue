@@ -85,16 +85,16 @@
 import {
   withDefaults,
   defineProps,
-  watch,
   ref,
-  nextTick
+  nextTick,
+  watchEffect
 } from 'vue'
 type Props = {
   size?: number
   type?: string // circle 圆形  default默认
   showSuffix?: boolean
-  progress: any[] | number
-  colors?: any[] | string
+  progress: number[] | number
+  colors?: string[] | string
   maxProgress?: number
   width?: string
 }
@@ -108,7 +108,7 @@ const props = withDefaults(defineProps<Props>(), {
   maxProgress: 100,
   width: '100%'
 })
-const progressList = ref<any>([])
+const progressList = ref<any[]>([])
 const colorList = ref([
   '#3e8bff',
   '#19D4AE',
@@ -126,57 +126,47 @@ const progressCircleValue = ref(0)
 const progressValue = ref(0)
 const r = ref(27)
 const perimeter = ref(parseFloat((Math.PI * 2 * r.value).toFixed(2)))
-const progressRef = ref<HTMLElement>(null)
+const progressRef = ref<HTMLElement | null>(null)
 
-watch(() => props.progress, (newVal) => {
-  const arr: any[] = []
-  if (typeof newVal === 'number') {
-    arr.push(newVal)
+watchEffect(() => {
+  const progressList: number[] = []
+  if (typeof props.progress === 'number') {
+    progressList.push(props.progress)
   } else {
-    arr.push(...newVal)
+    progressList.push(...props.progress)
   }
-  if (props.type === 'circle') {
-    progressValue.value = arr[0]
-    let list = []
-    if (typeof props.colors === 'string') {
-      list = [props.colors]
-    } else {
-      list = props.colors
-    }
-    colorList.value = [...new Set([...list, ...colorList.value])]
+  const list = []
+  if (typeof props.colors === 'string') {
+    list.push(props.colors)
   } else {
-    progressValue.value = arr.reduce((val, next) => {
+    list.push(...props.colors)
+  }
+  colorList.value = [...new Set([...list, ...colorList.value])]
+  if (props.type === 'circle') {
+    progressValue.value = progressList[0]
+  } else {
+    progressValue.value = progressList.reduce((val, next) => {
       val = parseFloat((val + next).toFixed(2))
       return val
     }, 0)
   }
   nextTick(() => {
     if (props.type === 'circle') {
-      initCircleProgress(arr)
+      initCircleProgress(progressList)
     } else {
-      initProgress(arr)
+      initProgress(progressList)
     }
   })
-}, {
-  deep: true,
-  immediate: true
 })
 
-const initCircleProgress = (newVal: any[]) => {
+const initCircleProgress = (newVal: number[]) => {
   const val = newVal[0] || 0
   progressCircleValue.value = parseFloat(((props.maxProgress - val) / props.maxProgress * perimeter.value).toFixed(2))
 }
-const initProgress = (newVal: any[]) => {
+const initProgress = (newVal: number[]) => {
   const num = (newVal || []).length
-  const w = progressRef.value.getBoundingClientRect().width
+  const w = progressRef.value?.getBoundingClientRect().width ?? 0
   progressList.value = []
-  let list = []
-  if (typeof props.colors === 'string') {
-    list = [props.colors]
-  } else {
-    list = props.colors
-  }
-  colorList.value = [...new Set([...list, ...colorList.value])]
   for (let i = 0; i < num; i++) {
     progressList.value.push({
       width: newVal[i] / props.maxProgress * w,
@@ -188,61 +178,61 @@ const initProgress = (newVal: any[]) => {
 </script>
 
 <style lang="scss" scoped>
-  .y-progress-wrap{
+.y-progress-wrap{
+  display: flex;
+  align-items: center;
+  position: relative;
+  .y-progress-main-wrap{
+    flex: 1;
+  }
+  .y-progress-main{
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgba(64, 140, 255, .2);
+    overflow: hidden;
     display: flex;
-    align-items: center;
-    position: relative;
-    .y-progress-main-wrap{
-      flex: 1;
-    }
-    .y-progress-main{
-      width: 100%;
-      height: 8px;
-      border-radius: 4px;
-      background-color: rgba(64, 140, 255, .2);
-      overflow: hidden;
-      display: flex;
-      .y-progress-item{
-        width: 0;
-        height: 100%;
-        transition: all 0.3s;
-        &:last-child{
-          border-radius: 0 4px 4px 0;
-        }
+    .y-progress-item{
+      width: 0;
+      height: 100%;
+      transition: all 0.3s;
+      &:last-child{
+        border-radius: 0 4px 4px 0;
       }
     }
-    .y-progress-suffix{
-      margin-left: 8px;
-      color: rgba(29, 33, 41, 1);
-      font-size: 12px;
-      font-weight: 400;
-    }
-    .progress-circle{
-      transform: rotate(-90deg);
-      .progress{
-        transition: all .3s;
-      }
-    }
-    .progress-circle-content{
-      color: rgba(29, 33, 41, 1);
-      font-size: 16px;
-      font-weight: 400;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+  }
+  .y-progress-suffix{
+    margin-left: 8px;
+    color: rgba(29, 33, 41, 1);
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .progress-circle{
+    transform: rotate(-90deg);
+    .progress{
+      transition: all .3s;
     }
   }
-  .progress-transition-enter-active {
-    opacity: 0;
-    transform-origin: left;
-    transform: scaleX(0);
+  .progress-circle-content{
+    color: rgba(29, 33, 41, 1);
+    font-size: 16px;
+    font-weight: 400;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+}
+.progress-transition-enter-active {
+  opacity: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+}
 
-  .progress-transition-enter-to {
-    opacity: 1;
-    transform-origin: left;
-    transform: scaleX(1);
-    //transition: all 0.3s; //transition要写在此处
-  }
+.progress-transition-enter-to {
+  opacity: 1;
+  transform-origin: left;
+  transform: scaleX(1);
+  //transition: all 0.3s; //transition要写在此处
+}
 </style>
