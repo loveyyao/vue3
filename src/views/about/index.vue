@@ -44,9 +44,9 @@
         :max-progress="100"
       />
       <y-progress
-        :size="300"
         type="circle"
         :progress="progressCircle[1]"
+        :colors="progressColor"
         :max-progress="200"
       >
         <template
@@ -55,6 +55,15 @@
           {{ progressValue + ' / ' + maxProgress }}
         </template>
       </y-progress>
+    </div>
+    类型切换
+    <div>
+      <y-progress
+        :type="progressType"
+        :progress="progressCircle[0]"
+        :colors="colors[0]"
+        :max-progress="100"
+      />
     </div>
   </div>
 </template>
@@ -102,7 +111,7 @@ const option = ref({
   ]
 })
 const progress = ref([11, 24, 30, 10])
-const progressCircle = ref([0, 100])
+const progressCircle = ref([10, 100])
 const colors = ref([
   '#19D4AE',
   '#1593C5',
@@ -115,6 +124,8 @@ const colors = ref([
   '#EFAAB5',
   '#F272BE'
 ])
+const progressColor = ref('#19D4AE')
+const progressType = ref('default')
 
 const getRandomNumber = (maxNum: number) => {
   return parseFloat((Math.random() * maxNum).toFixed(2))
@@ -124,6 +135,8 @@ const changeProgress = () => {
   val.value = getRandomNumber(10000)
   progress.value = [getRandomNumber(25), getRandomNumber(25), getRandomNumber(25), getRandomNumber(25)]
   progressCircle.value = [getRandomNumber(100), getRandomNumber(200)]
+  progressColor.value = `rgb(${getRandomNumber(255)}, ${getRandomNumber(255)}, ${getRandomNumber(255)})`
+  progressType.value = progressType.value === 'default' ? 'circle' : 'default'
 }
 </script>
 
