@@ -184,10 +184,21 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import {
+  reactive,
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  onActivated
+} from 'vue'
 import { useStore } from 'vuex'
 import { getWelcome } from '@/utils/utils'
 import dayjs from 'dayjs'
+
+defineOptions({
+  name: 'home'
+})
 
 const store = useStore()
 const timer = ref(null)
@@ -317,6 +328,9 @@ onBeforeUnmount(() => {
 })
 onMounted(() => {
   loadData()
+})
+onActivated(() => {
+  console.log('onActivated-home')
 })
 </script>
 

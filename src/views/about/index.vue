@@ -71,6 +71,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
+defineOptions({
+  name: 'about'
+})
+
 const val = ref<number>(0)
 const dashoffset = ref<number>(0)
 const option = ref({

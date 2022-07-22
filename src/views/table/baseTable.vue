@@ -52,8 +52,12 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
+<script lang="ts" setup name="baseTable">
+import { reactive, onActivated } from 'vue'
+
+defineOptions({
+  name: 'baseTable'
+})
 
 const pagination = reactive({
   page: 1,
@@ -117,6 +121,10 @@ const handleCurrentChange = (val: number) => {
   console.log(`current page: ${val}`)
   pagination.page = val
 }
+
+onActivated(() => {
+  console.log('onActivated-baseTable')
+})
 </script>
 
 <style lang="scss" scoped>
