@@ -14,7 +14,8 @@
     "allowJs": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "unplugin-vue-define-options"
     ],
     "paths": {
       "@/*": [
