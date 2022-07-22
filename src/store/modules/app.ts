@@ -6,6 +6,7 @@ export default {
   state: {
     collapsed: false, // 是否收起菜单
     viewTags: [],
+    cachedViews: [],
     language: localStorage.getItem(LANGUAGE) || 'zh'
   },
   getters: {
@@ -27,6 +28,9 @@ export default {
         }
         return list
       }, [])
+      state.cachedViews = state.viewTags
+        .filter((e: RouteRecordRaw) => e.meta && e.meta.keepAlive)
+        .map((e: RouteRecordRaw) => e.name)
     },
     deleteViewTag(state: any, tag: RouteRecordRaw) {
       state.viewTags = state.viewTags.filter((e: RouteRecordRaw) => e.path !== tag.path)
