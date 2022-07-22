@@ -17,7 +17,7 @@
 
 注：revert比较特殊，如果当前commit用于撤销以前的commit，则必须以revert:开头，后面跟着被撤销commit的Header
 
-scope：可以省略，用于说明commit的影响范围，比如数据层、控制层、视图层等
+scope：用于标记此次修改文件的范围。这个范围可以对应某个功能或者文件夹都可以。可以省略，用于说明commit的影响范围，比如数据层、控制层、视图层等。
 
 subject：是commit的简短描述，不超过50个字符
 
