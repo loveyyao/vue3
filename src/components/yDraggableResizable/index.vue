@@ -157,6 +157,9 @@ const stopResizable = (event: MouseEvent) => {
   event.preventDefault()
   event.stopPropagation()
   document.body.removeEventListener('mousemove', handleMove)
+  if (props.parent) {
+    calibrationPosition()
+  }
 }
 const handleMove = (event: MouseEvent) => {
   event.preventDefault()
@@ -190,7 +193,7 @@ const handleMove = (event: MouseEvent) => {
     if (props.parent) {
       if (movePosition.top < parentPosition.value.top) {
         movePosition.top = parentPosition.value.top
-        movePosition.height = currentPosition.height
+        movePosition.height = cacheCurrentPosition.height - (parentPosition.value.top - mouseDownPosition.clientY)
       }
     }
   }
@@ -214,7 +217,7 @@ const handleMove = (event: MouseEvent) => {
     if (props.parent){
       if (movePosition.left < parentPosition.value.left) {
         movePosition.left = parentPosition.value.left
-        movePosition.width = currentPosition.width
+        movePosition.width = cacheCurrentPosition.width - (parentPosition.value.left - mouseDownPosition.clientX)
       }
     }
   }
@@ -265,18 +268,49 @@ const handleMove = (event: MouseEvent) => {
   currentPosition.width = movePosition.width
   currentPosition.height = movePosition.height
 }
+// 解决拖拽结束超出父级的问题
+const calibrationPosition = () => {
+  const disLeft = currentPosition.left - parentPosition.value.left
+  const maxW = parentPosition.value.width - disLeft
+  if (currentPosition.width > maxW) {
+    currentPosition.width = maxW
+  }
+  const disTop = currentPosition.top - parentPosition.value.top
+  const maxH = parentPosition.value.width - disTop
+  if (currentPosition.height > maxH) {
+    currentPosition.width = maxH
+  }
+}
 const handleClick = () => {
   handleShow.value = true
 }
 const hideHandle = () => {
   handleShow.value = false
 }
+const getRealStyle = (obj: Element | any, styleName: any) => {
+  let realStyle = null
+  if (obj.currentStyle) {
+    realStyle = obj.currentStyle[styleName]
+  } else if (window.getComputedStyle) {
+    realStyle = window.getComputedStyle(obj, null)[styleName]
+  }
+  return realStyle
+}
 // 初始化组件位置
 const init = () => {
   parentPosition.value = draggableMain.value.parentNode.getBoundingClientRect()
-  console.log(parentPosition.value)
-  currentPosition.top = parentPosition.value.top
-  currentPosition.left = parentPosition.value.left
+  // TODO 当fixed定位相对于祖辈元素的时候需要特别处理
+  if (
+    getRealStyle(draggableMain.value.parentNode, 'transform') !== 'none' ||
+    getRealStyle(draggableMain.value.parentNode, 'perspective') !== 'none' ||
+    getRealStyle(draggableMain.value.parentNode, 'filter') !== 'none'
+  ) {
+    currentPosition.top = 0
+    currentPosition.left = 0
+  } else {
+    currentPosition.top = parentPosition.value.top
+    currentPosition.left = parentPosition.value.left
+  }
 }
 onMounted(() => {
   init()
