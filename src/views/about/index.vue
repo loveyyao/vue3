@@ -2,8 +2,15 @@
   <div class="y-view-main">
     <el-button v-permission="['admin']">测试权限admin</el-button>
     <el-button v-permission="['admin', 'about']" type="primary">测试权限about</el-button>
-    <el-button v-permission="['admin', 'table']" type="primary">测试权限table</el-button>
+    <el-button
+      v-permission="permission"
+      type="primary"
+      @click="handleClick"
+    >
+      动态按钮权限
+    </el-button>
     <el-button type="primary" @click="changeProgress">changeProgress</el-button>
+    <el-button type="primary" @click="changePermission">改变动态权限</el-button>
     <v-chart class="chart" :option="option" />
     <div class="count">
       <div>数字</div>
@@ -69,12 +76,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 
 defineOptions({
   name: 'about'
 })
-
+const { appContext } = getCurrentInstance()
+const globalProxy = appContext.config.globalProperties
 const val = ref<number>(0)
 const dashoffset = ref<number>(0)
 const option = ref({
@@ -115,6 +123,7 @@ const option = ref({
   ]
 })
 const progress = ref([11, 24, 30, 10])
+const permission = ref(['admin', 'table'])
 const progressCircle = ref([10, 100])
 const colors = ref([
   '#19D4AE',
@@ -133,6 +142,17 @@ const progressType = ref('default')
 
 const getRandomNumber = (maxNum: number) => {
   return parseFloat((Math.random() * maxNum).toFixed(2))
+}
+const handleClick = () => {
+  console.log(1)
+  globalProxy.$message.success('按钮点击事件')
+}
+const changePermission = () => {
+  if (permission.value.length === 1) {
+    permission.value = ['admin', 'table']
+  } else {
+    permission.value = ['admintable']
+  }
 }
 const changeProgress = () => {
   dashoffset.value = getRandomNumber(169)

@@ -8,7 +8,7 @@ import 'element-plus/es/components/message/style/css'
 import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/loading/style/css'
 import 'element-plus/es/components/notification/style/css'
-import type { App } from 'vue'
+import type { App, DirectiveBinding } from 'vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { permission } from '@/utils/utils'
 import ECharts from './echarts'
@@ -33,10 +33,30 @@ export default function (app: App) {
   })
   // 注册全局指令
   app.directive('permission', {
-    mounted(el, binding) {
+    mounted(el, binding: DirectiveBinding, vNode: any) {
       const roles = binding.value
       if (!permission(roles)) {
-        el.parentNode && el.parentNode.removeChild(el)
+        const comment = document.createComment('')
+        Object.defineProperty(comment, 'setAttribute', {
+          value: () => undefined
+        })
+        vNode.parentNode = el.parentNode
+        vNode.currentEl = comment
+        el.parentNode && el.parentNode.replaceChild(comment, el)
+      }
+    },
+    updated (el, binding: DirectiveBinding, vNode: any, prevVNode: any) {
+      const roles = binding.value
+      if (permission(roles)) {
+        prevVNode && prevVNode.parentNode && prevVNode.parentNode.replaceChild(el, prevVNode.currentEl)
+      } else {
+        const comment = document.createComment('')
+        Object.defineProperty(comment, 'setAttribute', {
+          value: () => undefined
+        })
+        vNode.parentNode = el.parentNode
+        vNode.currentEl = comment
+        el.parentNode && el.parentNode.replaceChild(comment, el)
       }
     }
   })
