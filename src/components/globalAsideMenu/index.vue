@@ -67,6 +67,7 @@ watch(() => router.currentRoute.value, (newValue: RouteRecordRaw)=> {
   ::v-deep{
     .el-menu{
       height: 100%;
+      border: none;
     }
     .el-menu:not(.el-menu--collapse){
       width: 200px;

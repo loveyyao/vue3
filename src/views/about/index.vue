@@ -84,7 +84,6 @@ defineOptions({
 const { appContext } = getCurrentInstance()
 const globalProxy = appContext.config.globalProperties
 const val = ref<number>(0)
-const dashoffset = ref<number>(0)
 const option = ref({
   title: {
     text: "Traffic Sources",
@@ -155,7 +154,6 @@ const changePermission = () => {
   }
 }
 const changeProgress = () => {
-  dashoffset.value = getRandomNumber(169)
   val.value = getRandomNumber(10000)
   progress.value = [getRandomNumber(25), getRandomNumber(25), getRandomNumber(25), getRandomNumber(25)]
   progressCircle.value = [getRandomNumber(100), getRandomNumber(200)]
