@@ -13,17 +13,23 @@
           tag="div"
           name="progress-transition"
         >
-          <div
+          <el-tooltip
             v-for="(item, index) in progressList"
             :key="index"
-            class="y-progress-item"
-            :style="{
-              width: item.width + 'px',
-              'background-color': progressList.length === 1 ? 'none' : item.color,
-              'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
-              'transition-delay': 0.1 * index + 's'
-            }"
-          />
+            effect="dark"
+            :content="item.progress"
+            placement="top"
+          >
+            <div
+              class="y-progress-item"
+              :style="{
+                width: item.width + 'px',
+                'background-color': progressList.length === 1 ? 'none' : item.color,
+                'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
+                'transition-delay': 0.1 * index + 's'
+              }"
+            />
+          </el-tooltip>
         </transition-group>
       </div>
       <div
@@ -193,6 +199,7 @@ const initProgress = (newVal: number[]) => {
     overflow: hidden;
     display: flex;
     .y-progress-item{
+      cursor: pointer;
       width: 0;
       height: 100%;
       transition: all 0.3s;
