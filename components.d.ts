@@ -35,6 +35,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     GlobalAsideMenu: typeof import('./src/components/globalAsideMenu/index.vue')['default']
     GlobalHeader: typeof import('./src/components/globalHeader/index.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
@@ -44,6 +45,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     ViewTags: typeof import('./src/components/viewTags/index.vue')['default']
     YCountTo: typeof import('./src/components/yCountTo/index.vue')['default']
+    YDraggableResizable: typeof import('./src/components/yDraggableResizable/index.vue')['default']
     YProgress: typeof import('./src/components/yProgress/index.vue')['default']
   }
 }
