@@ -13,23 +13,19 @@
           tag="div"
           name="progress-transition"
         >
-          <el-tooltip
+          <div
             v-for="(item, index) in progressList"
             :key="index"
-            effect="dark"
-            :content="item.progress"
-            placement="top"
-          >
-            <div
-              class="y-progress-item"
-              :style="{
-                width: item.width + 'px',
-                'background-color': progressList.length === 1 ? 'none' : item.color,
-                'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
-                'transition-delay': 0.1 * index + 's'
-              }"
-            />
-          </el-tooltip>
+            class="y-progress-item"
+            :style="{
+              width: item.width + 'px',
+              'background-color': progressList.length === 1 ? 'none' : item.color,
+              'background-image': progressList.length === 1 ? 'linear-gradient( to left , rgba(145, 215, 255, 1),rgba(62, 139, 255, 1))' : 'none',
+              'transition-delay': 0.1 * index + 's'
+            }"
+            @mouseover="handleMouseover($event, item)"
+            @mouseleave="handleMouseleave"
+          />
         </transition-group>
       </div>
       <div
@@ -84,6 +80,15 @@
         </slot>
       </div>
     </template>
+    <el-tooltip
+      ref="progressTooltipRef"
+      v-model:visible="visible"
+      :virtual-ref="showProgressTooltipRef"
+      virtual-triggering
+      effect="dark"
+      :content="tooltipContent"
+      placement="top"
+    />
   </div>
 </template>
 
@@ -95,6 +100,7 @@ import {
   nextTick,
   watchEffect
 } from 'vue'
+
 type Props = {
   size?: number
   type?: string // circle 圆形  default默认
@@ -133,6 +139,10 @@ const progressValue = ref(0)
 const r = ref(27)
 const perimeter = ref(parseFloat((Math.PI * 2 * r.value).toFixed(2)))
 const progressRef = ref<HTMLElement | null>(null)
+const progressTooltipRef = ref<HTMLElement | null>(null)
+const showProgressTooltipRef = ref<HTMLElement | null>(null)
+const visible = ref<boolean>(false)
+const tooltipContent = ref<string>('')
 
 watchEffect(() => {
   const progressList: number[] = []
@@ -181,46 +191,63 @@ const initProgress = (newVal: number[]) => {
     })
   }
 }
+const handleMouseover = (e: Event, item: any) => {
+  showProgressTooltipRef.value = e.currentTarget
+  visible.value = !visible.value
+  tooltipContent.value = item.progress.toString()
+}
+const handleMouseleave = () => {
+  visible.value = !visible.value
+  tooltipContent.value = ''
+}
 </script>
 
 <style lang="scss" scoped>
-.y-progress-wrap{
+.y-progress-wrap {
   display: flex;
   align-items: center;
   position: relative;
-  .y-progress-main-wrap{
+
+  .y-progress-main-wrap {
     flex: 1;
   }
-  .y-progress-main{
+
+  .y-progress-main {
     width: 100%;
     height: 8px;
     border-radius: 4px;
     background-color: rgba(64, 140, 255, .2);
     overflow: hidden;
     display: flex;
-    .y-progress-item{
+
+    .y-progress-item {
       cursor: pointer;
       width: 0;
       height: 100%;
       transition: all 0.3s;
-      &:last-child{
+
+      &:last-child {
         border-radius: 0 4px 4px 0;
       }
     }
   }
-  .y-progress-suffix{
+
+  .y-progress-suffix {
     margin-left: 8px;
     color: rgba(29, 33, 41, 1);
     font-size: 12px;
     font-weight: 400;
   }
-  .progress-circle{
+
+  .progress-circle {
     transform: rotate(-90deg);
-    .progress{
+
+    .progress {
       transition: all .3s;
     }
   }
-  .progress-circle-content{
+
+  .progress-circle-content {
     color: rgba(29, 33, 41, 1);
     font-size: 16px;
     font-weight: 400;
@@ -230,6 +257,7 @@ const initProgress = (newVal: number[]) => {
     transform: translate(-50%, -50%);
   }
 }
+
 .progress-transition-enter-active {
   opacity: 0;
   transform-origin: left;
