@@ -45,7 +45,7 @@ const menus = computed<Array<RouteRecordRaw>>(() => {
 })
 const props = withDefaults(defineProps<Props>(), {
   backgroundColor: '#545c64',
-  activeTextColor: '#ffd04b',
+  activeTextColor: '#3e8bff',
   textColor: '#fff'
 })
 const addViewTag = (tag: RouteRecordRaw) => {
