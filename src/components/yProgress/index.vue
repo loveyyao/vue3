@@ -100,9 +100,9 @@ import {
   nextTick,
   watchEffect
 } from 'vue'
-import { YProgressProps, progressItem } from '@/components/yProgress/index'
+import { progressProps, progressItem } from '@/components/yProgress/index'
 
-const props = withDefaults(defineProps<YProgressProps>(), {
+const props = withDefaults(defineProps<progressProps>(), {
   size: 200,
   type: 'default',
   showSuffix: true,

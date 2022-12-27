@@ -1,4 +1,4 @@
-export interface YProgressProps {
+export interface progressProps {
   size?: number
   type?: string // circle 圆形  default默认
   showSuffix?: boolean
