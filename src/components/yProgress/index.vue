@@ -100,18 +100,9 @@ import {
   nextTick,
   watchEffect
 } from 'vue'
+import { YProgressProps, progressItem } from '@/components/yProgress/index'
 
-type Props = {
-  size?: number
-  type?: string // circle 圆形  default默认
-  showSuffix?: boolean
-  progress: number[] | number
-  colors?: string[] | string
-  maxProgress?: number
-  width?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<YProgressProps>(), {
   size: 200,
   type: 'default',
   showSuffix: true,
@@ -120,8 +111,8 @@ const props = withDefaults(defineProps<Props>(), {
   maxProgress: 100,
   width: '100%'
 })
-const progressList = ref<any[]>([])
-const colorList = ref([
+const progressList = ref<progressItem[]>([])
+const colorList = ref<string[]>([
   '#3e8bff',
   '#19D4AE',
   '#1593C5',
@@ -134,13 +125,13 @@ const colorList = ref([
   '#EFAAB5',
   '#F272BE'
 ])
-const progressCircleValue = ref(0)
-const progressValue = ref(0)
-const r = ref(27)
+const progressCircleValue = ref<number>(0)
+const progressValue = ref<number>(0)
+const r = ref<number>(27)
 const perimeter = ref(parseFloat((Math.PI * 2 * r.value).toFixed(2)))
 const progressRef = ref<HTMLElement | null>(null)
 const progressTooltipRef = ref<HTMLElement | null>(null)
-const showProgressTooltipRef = ref<HTMLElement | null>(null)
+const showProgressTooltipRef = ref<HTMLElement | EventTarget | null>(null)
 const visible = ref<boolean>(false)
 const tooltipContent = ref<string>('')
 
@@ -191,7 +182,7 @@ const initProgress = (newVal: number[]) => {
     })
   }
 }
-const handleMouseover = (e: Event, item: any) => {
+const handleMouseover = (e: Event, item: progressItem) => {
   showProgressTooltipRef.value = e.currentTarget
   visible.value = !visible.value
   tooltipContent.value = item.progress.toString()
@@ -268,6 +259,5 @@ const handleMouseleave = () => {
   opacity: 1;
   transform-origin: left;
   transform: scaleX(1);
-  //transition: all 0.3s; //transition要写在此处
 }
 </style>

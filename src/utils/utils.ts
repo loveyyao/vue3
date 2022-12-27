@@ -22,7 +22,7 @@ export const getWelcome = (login?: boolean) => {
   return login ? `${timeStr}，欢迎回来！` : timeStr
 }
 
-export const permission = (permission: any): boolean => {
+export const permission = (permission: string[] | string): boolean => {
   const state: any = store.state
   const roles = state.user.roles
   if (permission && permission instanceof Array && permission.length) {
