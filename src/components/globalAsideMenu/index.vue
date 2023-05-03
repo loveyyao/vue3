@@ -44,9 +44,9 @@ const menus = computed<Array<RouteRecordRaw>>(() => {
   }, [])
 })
 const props = withDefaults(defineProps<Props>(), {
-  backgroundColor: '#545c64',
-  activeTextColor: '#3e8bff',
-  textColor: '#fff'
+  // backgroundColor: '#545c64',
+  // activeTextColor: '#3e8bff',
+  // textColor: '#fff'
 })
 const addViewTag = (tag: RouteRecordRaw) => {
   store.commit('app/addViewTag', tag)
@@ -63,6 +63,7 @@ watch(() => router.currentRoute.value, (newValue: RouteRecordRaw)=> {
     top: 70px;
     left: 0;
     height: 100%;
+    z-index: 10;
   }
   ::v-deep{
     .el-menu{
