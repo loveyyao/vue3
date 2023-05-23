@@ -13,7 +13,7 @@ import zhLocale from 'element-plus/lib/locale/lang/zh-cn'
 import enLocale from 'element-plus/lib/locale/lang/en'
 import { LANGUAGE } from '@/utils/storage-vars'
 
-const locale = ref(null)
+const locale = ref<any>(null)
 const store = useStore()
 const lang = computed(() => store.state.app.language)
 watch(lang, (val) => {

@@ -1,5 +1,5 @@
-###关于项目git提交记录规范
-####header
+### 关于项目git提交记录规范
+#### header
 > type：用户说明commit类型
 
 | type | 说明 |
@@ -21,6 +21,6 @@ scope：用于标记此次修改文件的范围。这个范围可以对应某个
 
 subject：是commit的简短描述，不超过50个字符
 
-####Body
+#### Body
 
 >是commit的详细描述，可省略
